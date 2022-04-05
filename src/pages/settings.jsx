@@ -1,9 +1,9 @@
 import Layout from "../components/template/Layout";
 
-export default function Home() {
+export default function Notifications() {
   return (
     <div>
-      <Layout title="Layout" subtitle="Página de layout" >
+      <Layout title="Ajustes" subtitle="Personalize o sistema por aqui!" >
         <h3>Conteúdo!!!</h3>
       </Layout>
     </div>
