@@ -6,12 +6,13 @@ import User from "../../model/User";
 
 interface AuthContextProps {
   user: User
+  loading: boolean
   loginGoogle: () => Promise<void>
   logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextProps>({
-  user: null, loginGoogle: null, logout: null
+  user: null, loading: false, loginGoogle: null, logout: null
 })
 
 async function normalizedUser(firebaseUser: firebase.User): Promise<User> {
@@ -86,12 +87,15 @@ export function AuthProvider(props: any) {
     if (cookieAuthKey) {
       const cancel = firebase.auth().onIdTokenChanged(configureSession)
       return () => cancel()
+    } else {
+      setLoading(false)
     }
   }, [])
 
   return (
     <AuthContext.Provider value={{
       user,
+      loading,
       loginGoogle,
       logout
     }}>

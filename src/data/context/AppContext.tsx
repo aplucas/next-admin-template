@@ -1,20 +1,26 @@
-import { createContext, useState } from "react";
-
-type theme = 'dark' | ''
+import { createContext, useEffect, useState } from "react";
 
 interface AppContextProps {
-  theme?: theme
+  theme?: string
   switchTheme?: () => void
 }
 
 const AppContext = createContext<AppContextProps>({})
 
 export function AppProvider(props: any) {
-  const [theme, setTheme] = useState<theme>('dark')
+  const [theme, setTheme] = useState('')
+  const itemTheme = process.env.NEXT_PUBLIC_LOCALSTORAGE_THEME
 
   function switchTheme() {
-    setTheme(theme === '' ? 'dark' : '')
+    const newTheme = theme === '' ? 'dark' : ''
+    setTheme(newTheme)
+    localStorage.setItem(itemTheme, newTheme)
   }
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem(itemTheme) || ''
+    setTheme(savedTheme)
+  }, [])
 
   return (
     <AppContext.Provider value={{
